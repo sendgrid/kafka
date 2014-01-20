@@ -27,16 +27,12 @@ fi
 
 case "$PACKAGE_TYPE" in
 "deb")
-  python setup.py sdist_dsc --debian-version ${BUILD_NUMBER} bdist_deb
+  echo "TODO: implement deb package"
   ;;
 "rpm")
-  python setup.py bdist_rpm --requires "python-zope-interface" --obsoletes "python-twisted" --release=${BUILD_NUMBER}.el6
-  ;;
-"egg")
-  python setup.py bdist_egg
+  make
   ;;
 *)
-  echo "Unknown package type '$PACKAGE_TYPE', generting generic binary distribution"
-  python setup.py bdist
+  echo "Unknown package type '$PACKAGE_TYPE'"
   ;;
 esac
