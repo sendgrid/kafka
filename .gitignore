@@ -14,3 +14,16 @@ project/sbt_project_definition.iml
 .#*
 rat.out
 TAGS
+
+# SendGrid 
+.berkshelf/
+.kitchen/
+.vagrant/
+build/
+dist
+deb_dist
+*.iml
+*.swp
+*.log
+TAGS
+*.DS_Store
