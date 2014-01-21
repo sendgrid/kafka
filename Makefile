@@ -18,7 +18,7 @@ all: rpm
 rpm:: kafka-rpm
 kafka-rpm: kafka-$(KAFKARPMVERSION)*.rpm
 
-kafka-$(KAFKARPMVERSION)*.rpm: kafka-$(KAFKARPMVERSION).tar.gz java-is-installed
+kafka-$(KAFKARPMVERSION)*.rpm: kafka-$(KAFKARPMVERSION).tar.gz java-is-installed dev-tools-is-installed
 	@echo "Building the rpm"
 	-@mkdir -p RPM_BUILDING/BUILD  RPM_BUILDING/RPMS  RPM_BUILDING/SOURCES  RPM_BUILDING/SPECS  RPM_BUILDING/SRPMS
 	@rpmbuild --define="_topdir `pwd`/RPM_BUILDING" -tb $<
@@ -41,7 +41,6 @@ kafka/kafka.spec: kafka.spec.in kafka-version
 	@echo "Creating the spec file"
 	@(cat $< | sed 's@##RPMVERSION##@$(KAFKARPMVERSION)@g;s@##RPMRELEASE##@$(RPMRELEASE)@g;s@##INTEGERVERSION##@$(KAFKARPMVERSIONINTEGER)@g' > $@ )
 	
-
 kafka/.git:
 	@git clone https://github.com/apache/kafka.git kafka
 
@@ -50,6 +49,15 @@ kafka-version: kafka/.git Makefile
 	   git checkout $(KAFKARPMVERSIONTAG) ; \
 	)
 
+dev-tools-is-installed:
+	@(\
+	  if rpmbuild --version > /dev/null 2>&1; then
+	    echo INSTALLED > $@ ; \
+	  else \
+		echo 'Development Tools is missing. Installing:' ; \
+		@yum groupinstall "Development Tools" -y ; \
+	  fi \
+	)
 
 java-is-installed:
 	@(\
@@ -68,4 +76,3 @@ clean::
 	@echo -n "Cleaning kafka "
 	@rm -rf kafka kafka-$(KAFKARPMVERSION) kafka-$(KAFKARPMVERSION).tar.gz kafka-$(KAFKARPMVERSION)*rpm RPM_BUILDING java-is-installed
 	@echo "done."
-
