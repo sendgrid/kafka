@@ -51,10 +51,11 @@ kafka-version: kafka/.git Makefile
 
 dev-tools-is-installed:
 	@(\
-	  if rpmbuild --version > /dev/null 2>&1; then
+	  if rpmbuild --version > /dev/null 2>&1 ; \
+	  then \
 	    echo INSTALLED > $@ ; \
 	  else \
-		echo 'Development Tools is missing. Installing:' ; \
+		echo "Development Tools is missing. Installing..." ; \
 		@yum groupinstall "Development Tools" -y ; \
 	  fi \
 	)
@@ -74,5 +75,5 @@ java-is-installed:
 
 clean::
 	@echo -n "Cleaning kafka "
-	@rm -rf kafka kafka-$(KAFKARPMVERSION) kafka-$(KAFKARPMVERSION).tar.gz kafka-$(KAFKARPMVERSION)*rpm RPM_BUILDING java-is-installed
+	@rm -rf kafka kafka-$(KAFKARPMVERSION) kafka-$(KAFKARPMVERSION).tar.gz kafka-$(KAFKARPMVERSION)*rpm RPM_BUILDING java-is-installed dev-tools-is-installed
 	@echo "done."
