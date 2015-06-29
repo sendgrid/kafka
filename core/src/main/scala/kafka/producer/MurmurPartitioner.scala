@@ -21,7 +21,7 @@ package kafka.producer
 import kafka.utils._
 import util.hashing.MurmurHash3
 
-class ByteArrayPartitioner(props: VerifiableProperties = null) extends Partitioner {
+class MurmurPartitioner(props: VerifiableProperties = null) extends Partitioner {
   def partition(key: Any, numPartitions: Int): Int = {
     val k = new String(key.asInstanceOf[Array[Byte]], "UTF8")
     val h = MurmurHash3.bytesHash(k.getBytes(), 0)
