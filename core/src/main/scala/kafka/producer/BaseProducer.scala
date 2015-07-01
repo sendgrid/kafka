@@ -55,7 +55,7 @@ class OldProducer(producerProps: Properties) extends BaseProducer {
 
   // default to byte array partitioner
   if (producerProps.getProperty("partitioner.class") == null)
-    producerProps.setProperty("partitioner.class", classOf[kafka.producer.ByteArrayPartitioner].getName)
+    producerProps.setProperty("partitioner.class", classOf[kafka.producer.MurmurPartitioner].getName)
   val producer = new kafka.producer.Producer[Array[Byte], Array[Byte]](new ProducerConfig(producerProps))
 
   override def send(topic: String, key: Array[Byte], value: Array[Byte]) {
